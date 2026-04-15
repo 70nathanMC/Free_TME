@@ -875,13 +875,13 @@ label before_work:
             jump work_hours
 
         "Spend TME." (cost=0):
-            call choose_spend_type(False)
+            call choose_spend_type(False) from _call_choose_spend_type
             $ spend_type = _return
             if spend_type == "food" or spend_type == "water":
-                call choose_spend_size(spend_type)
+                call choose_spend_size(spend_type) from _call_choose_spend_size
                 $ spend_size = _return
                 if spend_size:
-                    call buy_item(spend_type, spend_size)
+                    call buy_item(spend_type, spend_size) from _call_buy_item
             jump before_work
 
 
@@ -1039,13 +1039,13 @@ label after_work_02:
 
     menu:
         "Spend TME" (cost=0):
-            call choose_spend_type(True)
+            call choose_spend_type(True) from _call_choose_spend_type_1
             $ spend_type = _return
             if spend_type == "food" or spend_type == "water":
-                call choose_spend_size(spend_type)
+                call choose_spend_size(spend_type) from _call_choose_spend_size_1
                 $ spend_size = _return
                 if spend_size:
-                    call buy_item(spend_type, spend_size)
+                    call buy_item(spend_type, spend_size) from _call_buy_item_1
                 jump after_work_02
             elif spend_type == "free_time":
                 call screen free_time_terminal
@@ -1100,23 +1100,23 @@ label free_time:
 
         # Use CALL instead of JUMP so they come back to the loop when done
         if chosen_action == "door":
-            call check_door
+            call check_door from _call_check_door
         elif chosen_action == "vent":
-            call check_vent
+            call check_vent from _call_check_vent
         elif chosen_action == "pc":
-            call check_pc
+            call check_pc from _call_check_pc
         elif chosen_action == "painting":
-            call check_painting
+            call check_painting from _call_check_painting
         elif chosen_action == "plant":
-            call check_plant
+            call check_plant from _call_check_plant
         elif chosen_action == "drawer_01":
-            call check_drawer_01
+            call check_drawer_01 from _call_check_drawer_01
         elif chosen_action == "drawer_02":
-            call check_drawer_02
+            call check_drawer_02 from _call_check_drawer_02
         elif chosen_action == "drawer_03":
-            call check_drawer_03
+            call check_drawer_03 from _call_check_drawer_03
         elif chosen_action == "drawer_04":
-            call check_drawer_04
+            call check_drawer_04 from _call_check_drawer_04
         elif chosen_action == "end_free_time":
             jump end_free_time
 
@@ -1148,14 +1148,14 @@ label check_door:
     menu:
 
         "Observe" (cost=1):
-            call pass_time(1, "door", "unsuspicious")
+            call pass_time(1, "door", "unsuspicious") from _call_pass_time
             scene room_look_door
             y "This door is made of solid metal. It looks impenetrable, and there's no visible lock or handle on this side—just a seamless surface."
             y "I don't know what lies beyond it. Maybe the soldier is guarding it, or perhaps it's just another part of this twisted setup. Escaping through here seems risky without more info."
             return
 
         "Try to open the door" (cost=1):
-            call pass_time(1, "door", "unsuspicious")
+            call pass_time(1, "door", "unsuspicious") from _call_pass_time_1
             scene black_screen with fade
             "You spent 1 minute trying to open the door..."
             scene room_look_door with fade
@@ -1163,7 +1163,7 @@ label check_door:
             return
 
         "Listen at the door" (cost=2):
-            call pass_time(2, "door", "unsuspicious")
+            call pass_time(2, "door", "unsuspicious") from _call_pass_time_2
             hide screen status_hud with fade
             window hide
             scene black_screen with fade
@@ -1185,13 +1185,13 @@ label check_plant:
 
         "Observe" (cost=1):
             scene room_look_plant
-            call pass_time(1, "plant", "unsuspicious")
+            call pass_time(1, "plant", "unsuspicious") from _call_pass_time_3
             y "An indoor plant? Cool. A companion I can grow old here with. Hopefully I can get our here before this dies of old age."
             y "Maybe there is something hidden here? maybe below the pot or in the soil?"
             return
 
         "Search the plant" (cost=5):
-            call pass_time(5, "plant", "unsuspicious")
+            call pass_time(5, "plant", "unsuspicious") from _call_pass_time_4
             if _return == "interrupted":
                 return
             hide screen status_hud with fade
@@ -1215,7 +1215,7 @@ label check_pc:
     menu:
 
         "Observe" (cost=1):
-            call pass_time(1, "pc", "unsuspicious")
+            call pass_time(1, "pc", "unsuspicious") from _call_pass_time_5
             scene room_look_pc
             y "This PC looks pretty standard—nothing fancy, just a typical company machine."
             y "Honestly, my old PC was way better than this trash."
@@ -1223,7 +1223,7 @@ label check_pc:
             return
 
         "Search the PC" (cost=5):
-            call pass_time(5, "pc", "unsuspicious")
+            call pass_time(5, "pc", "unsuspicious") from _call_pass_time_6
             if _return == "interrupted":
                 return
             hide screen status_hud with fade
@@ -1237,7 +1237,7 @@ label check_pc:
             return
 
         "Decipher the cipher ([deciphering]/3)" (cost=30) if cipher_found and deciphering < 4:
-            call pass_time(30, "pc", "unsuspicious")
+            call pass_time(30, "pc", "unsuspicious") from _call_pass_time_7
             if _return == "interrupted":
                 return
             hide screen status_hud with fade
@@ -1269,7 +1269,7 @@ label check_pc:
 
 
 label check_drawer_01:
-    call pass_time(1, "drawer", "unsuspicious")
+    call pass_time(1, "drawer", "unsuspicious") from _call_pass_time_8
     scene drawer_01_open
     "Nothing."
     return
@@ -1278,12 +1278,12 @@ label check_drawer_01:
 label check_drawer_02:
 
     if cipher_decoded == False:
-        call pass_time(1, "drawer", "unsuspicious")
+        call pass_time(1, "drawer", "unsuspicious") from _call_pass_time_9
         scene drawer_02_open
         "Empty."
 
     elif cipher_decoded == True and has_screwdriver == False:
-        call pass_time(1, "drawer", "unsuspicious")
+        call pass_time(1, "drawer", "unsuspicious") from _call_pass_time_10
         scene drawer_02_open_with_screwdriver
         y "Nice, it really was hidden on top of this drawer."
         y "Who ever you are, I will make sure that your efforts are not in vain. I will escape here successfully."
@@ -1297,14 +1297,14 @@ label check_drawer_02:
 
         
 label check_drawer_03:
-    call pass_time(1, "drawer", "unsuspicious")
+    call pass_time(1, "drawer", "unsuspicious") from _call_pass_time_11
     scene drawer_03_open
     "Void"
     return
 
            
 label check_drawer_04:
-    call pass_time(1, "drawer", "unsuspicious")
+    call pass_time(1, "drawer", "unsuspicious") from _call_pass_time_12
     scene drawer_04_open
     "Desolate."
     return
@@ -1315,7 +1315,7 @@ label check_painting:
     "What to do?"
     menu:
         "Observe" (cost=1):
-            call pass_time(1, "painting", "unsuspicious")
+            call pass_time(1, "painting", "unsuspicious") from _call_pass_time_13
             scene room_look_painting
             y "This painting is not very ominous at all..."
             y "Is this going to be my fate if I don't follow all these rules they set up?"
@@ -1323,7 +1323,7 @@ label check_painting:
             return
 
         "Search the painting" (cost=5) if cipher_found == False:
-            call pass_time(5, "painting", "unsuspicious")
+            call pass_time(5, "painting", "unsuspicious") from _call_pass_time_14
             if _return == "interrupted":
                 return
             hide screen status_hud with fade
@@ -1350,7 +1350,7 @@ label check_vent:
     menu:
 
         "Observe" (cost=1):
-            call pass_time(1, "vent", "unsuspicious")
+            call pass_time(1, "vent", "unsuspicious") from _call_pass_time_15
             scene room_look_vent
             y "This vent, it is so obvious that this will be where I can escape."
             y "Is this a joke? No way they did not know that their prisoner can escape through this."
@@ -1360,7 +1360,7 @@ label check_vent:
             return
 
         "Try to open vent" (cost=5) if has_screwdriver == False:
-            call pass_time(5, "opening_vent", "suspicious")
+            call pass_time(5, "opening_vent", "suspicious") from _call_pass_time_16
             hide screen status_hud with fade
             window hide
             scene black_screen with fade
@@ -1373,7 +1373,7 @@ label check_vent:
             return
 
         "Try to open vent with screwdriver" (cost=5) if has_screwdriver == True:
-            call pass_time(5, "opening_vent", "suspicious")
+            call pass_time(5, "opening_vent", "suspicious") from _call_pass_time_17
             hide screen status_hud with fade
             window hide
             scene black_screen with fade
@@ -1392,7 +1392,7 @@ label check_vent:
             menu:
 
                 "Yes" (cost=3):
-                    call pass_time(3, "into_vent", "suspicious")
+                    call pass_time(3, "into_vent", "suspicious") from _call_pass_time_18
                     hide screen status_hud with fade
                     scene black_screen with fade
                     window hide
@@ -1443,7 +1443,7 @@ label vent_fix:
     menu:
 
         "Put the vent screen back" (cost=5):
-            call pass_time(5, "closing_vent", "suspicious")
+            call pass_time(5, "closing_vent", "suspicious") from _call_pass_time_19
             hide screen status_hud with fade
             window hide
             scene black_screen with fade
@@ -1478,7 +1478,7 @@ label vent_maze_loop:
             centered "You turned around and spent [crawling_penalty] minutes going back to the start of the vents."
             
             # The bouncer handles the math and death/caught checks!
-            call pass_time(crawling_penalty, "inside_vent", "suspicious")
+            call pass_time(crawling_penalty, "inside_vent", "suspicious") from _call_pass_time_20
 
             # If they survived the crawl, reset the maze
             $ vent_progress = 0
@@ -1494,7 +1494,7 @@ label vent_maze_loop:
             centered "You spent 3 minutes getting out of the vents and into the office."
             
             # The bouncer handles the math
-            call pass_time(3, "unto_vent", "suspicious")
+            call pass_time(3, "unto_vent", "suspicious") from _call_pass_time_21
             
             # If they weren't caught climbing down, put them back in the room
             show screen status_hud
@@ -1506,7 +1506,7 @@ label vent_maze_loop:
     hide screen status_hud
     scene black_screen with fade
     centered "Crawling in that direction..."
-    call pass_time(5, "inside_vent", "suspicious")
+    call pass_time(5, "inside_vent", "suspicious") from _call_pass_time_22
     show screen status_hud
 
     # The Logic Check! 
@@ -1536,7 +1536,7 @@ label vent_maze_loop:
             centered "You turned around and spent [crawling_penalty] minutes going back to the start of the vents."
             
             # Let the bouncer handle if they get caught trying to retreat!
-            call pass_time(crawling_penalty, "inside_vent", "suspicious")
+            call pass_time(crawling_penalty, "inside_vent", "suspicious") from _call_pass_time_23
 
             # Reset the maze so they can try again
             $ vent_progress = 0
