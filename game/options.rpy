@@ -43,7 +43,7 @@ Group Name: Indie
 ## distribution. This must be ASCII-only, and must not contain spaces, colons,
 ## or semicolons.
 
-define build.name = "ProjectVN"
+define build.name = "FreeTME"
 
 
 ## Sounds and music ############################################################
