@@ -142,8 +142,6 @@ define gui.namebox_background = None
 ## Reposition the Dialogue Text slightly lower so it doesn't overlap the name.
 define gui.dialogue_xpos = 80
 define gui.dialogue_ypos = 75
-define gui.dialogue_width = 1540
-define gui.dialogue_text_xalign = 0.0
 
 ## The maximum width of dialogue text, in pixels.
 ## (1700 width - 80 left padding - 80 right padding = 1540 perfect width)
