@@ -25,7 +25,7 @@ image blinking_cursor:
     repeat
 
 define config.menu_include_disabled = False
-default dev_powers = True
+default dev_powers = False
 default unknown_name = "???"
 default time_currency = 20
 default food = 180
